@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Alexey Remizov <alexey@remizov.org>
 Build-Depends: debhelper (>= 8)
 Standards-Version: 3.9.4
-Homepage: http://remizov.org/DelugedInit
+Homepage: https://github.com/alxrem/deluged-init
 
 Package: deluged-init
 Architecture: all

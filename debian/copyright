@@ -1,7 +1,7 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: deluged-init
 Upstream-Contact: Alexey Remizov <alexey@remizov.org>
-Source: https://remizov.org/DelugedInit
+Source: https://github.com/alxrem/deluged-init
 
 Files: *
 Copyright: 2013 Alexey Remizov

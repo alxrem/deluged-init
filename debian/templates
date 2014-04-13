@@ -1,0 +1,17 @@
+Template: deluged-init/title
+Type: title
+_Description: Deluge bittorrent client
+
+Template: deluged-init/run_at_startup
+Type: boolean
+Default: true
+_Description: Run at startup?
+
+Template: deluged-init/user
+Type: string
+_Description: User:
+
+Template: deluged-init/options
+Type: string
+Default: -u 127.0.0.1
+_Description: Options:

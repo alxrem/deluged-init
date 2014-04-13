@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+. /usr/share/debconf/confmodule
+
+db_settitle deluged-init/title
+
+db_input medium deluged-init/run_at_startup || true
+db_input high deluged-init/user || true
+db_input medium deluged-init/options || true
+
+db_go || true

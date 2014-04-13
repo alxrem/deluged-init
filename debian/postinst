@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -e
+. /usr/share/debconf/confmodule
+
+db_get deluged-init/run_at_startup
+if [ "${RET:-true}" = 'true' ]; then
+    RUN_AT_STARTUP=yes
+else
+    RUN_AT_STARTUP=no
+fi
+
+db_get deluged-init/user
+USER=$RET
+db_get deluged-init/options
+OPTIONS=$RET
+db_stop
+
+DEFAULT=/etc/default/deluged
+
+case $1 in
+    configure)
+        grep -q "^[[:space:]]*RUN_AT_STARTUP=.*" $DEFAULT || echo "RUN_AT_STARTUP=" >> $DEFAULT
+        sed -i "s/^\([[:space:]]*RUN_AT_STARTUP=\).*$/\1\"${RUN_AT_STARTUP}\"/" $DEFAULT
+
+        grep -q "^[[:space:]]*USER=.*" $DEFAULT || echo "USER=" >> $DEFAULT
+        sed -i "s/^\([[:space:]]*USER=\).*$/\1\"${USER}\"/" $DEFAULT
+
+        grep -q "^[[:space:]]*OPTIONS=.*" $DEFAULT || echo "OPTIONS=" >> $DEFAULT
+        sed -i "s/^\([[:space:]]*OPTIONS=\).*$/\1\"${OPTIONS}\"/" $DEFAULT
+esac
+
+#DEBHELPER#

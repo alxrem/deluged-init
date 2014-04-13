@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+override_dh_installinit:
+	dh_installinit --name=deluged
+
+override_dh_install:
+	dh_install
+	install -D -m 0644 debian/default debian/deluged-init/etc/default/deluged
+
+%:
+	dh $@

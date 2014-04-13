@@ -1,0 +1,55 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          deluged
+# Required-Start:    $local_fs $remote_fs $network
+# Required-Stop:     $local_fs $remote_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start or stop the deluged
+### END INIT INFO
+#
+# Author:   Alexey Remizov <alexey@remizov.org>
+#
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=/usr/bin/deluged
+
+test -x $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+[ -r /etc/default/deluged ] && . /etc/default/deluged
+
+[ "x$RUN_AT_STARTUP" = "xyes" ] || exit 0
+
+HOME=`getent passwd $USER | cut -d: -f6`
+CONFDIR=$HOME/.config/deluge
+PIDFILE=$CONFDIR/deluged.pid
+
+case "$1" in
+  start)
+    log_daemon_msg 'Starting deluged torrent daemon' 'deluged'
+    start-stop-daemon -S -c "$USER" -x $DAEMON -- -q $OPTIONS
+    log_end_msg $?
+    ;;
+  stop)
+    log_daemon_msg 'Stopping deluged torrent daemon' 'deluged'
+    if [ -r "$PIDFILE" ]; then
+        PID=`head -n1 $PIDFILE | cut -d\; -f1 | sed 's/[^0-9]//g'`
+        [ -n "$PID" ] && kill $PID
+        log_end_msg $?
+    else
+        log_end_msg 1
+    fi
+    ;;
+  force-reload|restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    echo "Usage: /etc/init.d/deluged {start|stop|restart|force-reload}"
+    exit 1
+    ;;
+esac
+
+exit 0
